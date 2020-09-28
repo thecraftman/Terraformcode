@@ -24,12 +24,12 @@ func TestEc2InstanceProvisioning(t *testing.T) {
       Vars: map[string]interface{}{
          "instance_name": Flugel,
          "test_label": "yes",
-				 "region":awsRegion,
+	 "region":us-east-2,
       },
 
       // Environment variables to set when running Terraform
       EnvVars: map[string]string{
-         "AWS_DEFAULT_REGION": awsRegion,
+         "AWS_DEFAULT_REGION": us-east-2,
       },
    }
   // At the end of the test, run `terraform destroy`
