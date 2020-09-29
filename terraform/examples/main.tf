@@ -1,35 +1,28 @@
-# ---------------------------------------------------------------------------------------------------------------------
-# PIN TERRAFORM VERSION TO >= 0.12
-# The examples have been upgraded to 0.12 syntax
-# ---------------------------------------------------------------------------------------------------------------------
+provider "aws" {
+  region = "us-east-2"
+  access_key = "AKIAT54TYME4QK42JJSB"
+  secret_key = "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"
 
-terraform {
-  # This module is now only being tested with Terraform 0.13.x. However, to make upgrading easier, we are setting
-  # 0.12.26 as the minimum version, as that version added support for required_providers with source URLs, making it
-  # forwards compatible with 0.13.x code.
-  required_version = ">= 0.12.26"
 }
 
-# ---------------------------------------------------------------------------------------------------------------------
-# BASIC TERRAFORM EXAMPLE
-# See test/terraform_aws_example.go for how to write automated tests for this code.
-# ---------------------------------------------------------------------------------------------------------------------
+resource "aws_instance" "web" {
+  ami           = "ami-05692172625678b4e"
+  instance_type = "t2.micro"
 
-data "template_file" "example" {
-  template = var.example
+  tags = {
+    Owner = "Infra team"
+    Name = "Flugel"
+  }
 }
 
-data "template_file" "example2" {
-  template = var.example2
-}
+resource "aws_s3_bucket" "b" {
+  bucket = "flugel-bucket"
+  acl    = "private"
 
-resource "local_file" "example" {
-  content  = "${data.template_file.example.rendered} + ${data.template_file.example2.rendered}"
-  filename = "example.txt"
-}
-
-resource "local_file" "example2" {
-  content  = data.template_file.example2.rendered
-  filename = "example2.txt"
+  tags = {
+    Name        = "flugel"
+    Environment = "Dev"
+    Owner = "Infrateam"
+  }
 }
 
